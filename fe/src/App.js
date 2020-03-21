@@ -49,7 +49,7 @@ const App = () => {
 					</Typography>
 				</Toolbar>
 				<Home />
-				<Fab color='primary' aria-label='add' alingSelf='flex-end' filled>
+				<Fab color='primary' aria-label='add'>
 					<FavoriteIcon />
 				</Fab>
 			</AppBar>

@@ -8,7 +8,7 @@ import {
 	Geography
 } from "react-simple-maps";
 
-import allCountries from "../lib/countries.json";
+import allCountries from "../lib/countryList.js";
 
 const geoUrl =
 	"https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -23,18 +23,16 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 			];
 
 			if (allPersons) {
-				setFilledBannedCountries(allCountries.map(country => country.name));
+				setFilledBannedCountries(allCountries.map(country => country));
 				setTooltipContent(
-					` ${name} 's Ports Closed, ALL incoming flights, including citizens banned.`
+					` ${name}'s Ports Closed, ALL incoming flights, including citizens banned.`
 				);
 			} else if (allForeigners) {
 				setFilledBannedCountries(
-					allCountries.filter(country => {
-						if (country.name != name) return country.name;
-					})
+					allCountries.filter(country => country !== name)
 				);
 				setTooltipContent(
-					`${name} only citizens allowed, ALL other incoming flights banned`
+					`${name} ONLY citizens allowed, ALL other incoming flights banned`
 				);
 			} else {
 				setFilledBannedCountries(selectNations);
@@ -55,28 +53,18 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 				<Geographies geography={geoUrl}>
 					{({ geographies }) =>
 						geographies.map(geo => {
+							const { NAME } = geo.properties;
 							const country = fillBannedCountries.find(
-								country => country == country
+								country => country === NAME
 							);
 							return (
 								<Geography
 									key={geo.rsmKey}
 									geography={geo}
 									onMouseEnter={() => {
-										const { NAME } = geo.properties;
 										handleChangeCountry(NAME);
 									}}
 									onMouseLeave={() => {}}
-									style={{
-										default: {
-											fill: "#D6D6DA",
-											outline: "none"
-										},
-										hover: {
-											fill: "#16D146",
-											outline: "none"
-										}
-									}}
 									fill={country ? "#D13D16" : "#F5F4F6"}
 								/>
 							);
