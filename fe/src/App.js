@@ -8,18 +8,19 @@ import {
 	makeStyles,
 	ThemeProvider
 } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
+import { AppBar, Fab, Toolbar, Typography } from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Home from "./pages/home";
 
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: blue[700]
+			main: grey[900]
 		},
 		secondary: {
-			main: blue[50]
+			main: grey[50]
 		}
 	}
 });
@@ -44,10 +45,13 @@ const App = () => {
 			<AppBar position='static'>
 				<Toolbar>
 					<Typography variant='h6' className={classes.title}>
-						News
+						World Map
 					</Typography>
 				</Toolbar>
 				<Home />
+				<Fab color='primary' aria-label='add' alingSelf='flex-end' filled>
+					<FavoriteIcon />
+				</Fab>
 			</AppBar>
 		</ThemeProvider>
 	);

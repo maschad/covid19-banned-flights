@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import {
 	ZoomableGroup,
 	ComposableMap,
@@ -8,58 +8,83 @@ import {
 	Geography
 } from "react-simple-maps";
 
+import allCountries from "../lib/countries.json";
+
 const geoUrl =
 	"https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-const rounded = num => {
-	if (num > 1000000000) {
-		return Math.round(num / 100000000) / 10 + "Bn";
-	} else if (num > 1000000) {
-		return Math.round(num / 100000) / 10 + "M";
-	} else {
-		return Math.round(num / 100) / 10 + "K";
-	}
-};
+const MapChart = ({ bannedCountries, setTooltipContent }) => {
+	const [fillBannedCountries, setFilledBannedCountries] = useState([]);
 
-const MapChart = ({ setTooltipContent }) => {
+	const handleChangeCountry = name => {
+		if (bannedCountries[name]) {
+			const { allPersons, allForeigners, selectNations } = bannedCountries[
+				name
+			];
+
+			if (allPersons) {
+				setFilledBannedCountries(allCountries.map(country => country.name));
+				setTooltipContent(
+					` ${name} 's Ports Closed, ALL incoming flights, including citizens banned.`
+				);
+			} else if (allForeigners) {
+				setFilledBannedCountries(
+					allCountries.filter(country => {
+						if (country.name != name) return country.name;
+					})
+				);
+				setTooltipContent(
+					`${name} only citizens allowed, ALL other incoming flights banned`
+				);
+			} else {
+				setFilledBannedCountries(selectNations);
+				setTooltipContent(
+					`${name} has banned flights from the following countries ${selectNations.map(
+						nation => nation
+					)}`
+				);
+			}
+		} else {
+			setTooltipContent(`${name} — No banned flights`);
+		}
+	};
+
 	return (
-		<>
-			<ComposableMap data-tip='' projectionConfig={{ scale: 200 }}>
-				<ZoomableGroup>
-					<Geographies geography={geoUrl}>
-						{({ geographies }) =>
-							geographies.map(geo => (
+		<ComposableMap data-tip='' projectionConfig={{ scale: 200 }}>
+			<ZoomableGroup>
+				<Geographies geography={geoUrl}>
+					{({ geographies }) =>
+						geographies.map(geo => {
+							const country = fillBannedCountries.find(
+								country => country == country
+							);
+							return (
 								<Geography
 									key={geo.rsmKey}
 									geography={geo}
 									onMouseEnter={() => {
-										const { NAME, POP_EST } = geo.properties;
-										setTooltipContent(`${NAME} — ${rounded(POP_EST)}`);
+										const { NAME } = geo.properties;
+										handleChangeCountry(NAME);
 									}}
-									onMouseLeave={() => {
-										setTooltipContent("");
-									}}
+									onMouseLeave={() => {}}
 									style={{
 										default: {
 											fill: "#D6D6DA",
 											outline: "none"
 										},
 										hover: {
-											fill: "#F53",
-											outline: "none"
-										},
-										pressed: {
-											fill: "#E42",
+											fill: "#16D146",
 											outline: "none"
 										}
 									}}
+									fill={country ? "#D13D16" : "#F5F4F6"}
 								/>
-							))
-						}
-					</Geographies>
-				</ZoomableGroup>
-			</ComposableMap>
-		</>
+							);
+						})
+					}
+				</Geographies>
+			</ZoomableGroup>
+		</ComposableMap>
 	);
 };
 
