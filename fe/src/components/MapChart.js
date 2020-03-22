@@ -48,7 +48,7 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 	};
 
 	return (
-		<ComposableMap data-tip='' projectionConfig={{ scale: 200 }}>
+		<ComposableMap data-tip='' projectionConfig={{ scale: 180 }}>
 			<ZoomableGroup>
 				<Geographies geography={geoUrl}>
 					{({ geographies }) =>
@@ -65,6 +65,12 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 										handleChangeCountry(NAME);
 									}}
 									onMouseLeave={() => {}}
+									style={{
+										hover: {
+											fill: "#36DA27",
+											outline: "none"
+										}
+									}}
 									fill={country ? "#D13D16" : "#F5F4F6"}
 								/>
 							);

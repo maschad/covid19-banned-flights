@@ -45,14 +45,14 @@ const App = () => {
 			<AppBar position='static'>
 				<Toolbar>
 					<Typography variant='h6' className={classes.title}>
-						World Map
+						COVID19 Flight Info
 					</Typography>
 				</Toolbar>
-				<Home />
-				<Fab color='primary' aria-label='add'>
-					<FavoriteIcon />
-				</Fab>
 			</AppBar>
+			<Home />
+			<Fab color='primary' aria-label='add'>
+				<FavoriteIcon />
+			</Fab>
 		</ThemeProvider>
 	);
 };
