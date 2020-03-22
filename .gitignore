@@ -2,12 +2,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-fe/node_modules
-fe/.pnp
+node_modules
+.pnp
+
+.pnp
 .pnp.js
 
 # testing
-/fecoverage
+coverage
 
 # production
 fe/build
@@ -19,6 +21,6 @@ fe/build
 .env.test.local
 .env.production.local
 
-fe/npm-debug.log*
-fe/yarn-debug.log*
-fe/yarn-error.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
