@@ -8,35 +8,21 @@ import { scrapeData } from "../lib/scraper";
 
 const Home = () => {
 	useEffect(() => {
+		/**
+		 * JSON @schema
+		 * {
+		 *  "countryName": [... banned countries]
+		 * }
+		 */
 		const fetchData = async () => {
 			const results = await scrapeData();
-			global.console.log("results", results);
+			setBannedCountries(results);
 		};
 		fetchData();
 	});
 
 	const [bannedCountries, setBannedCountries] = useState("");
 	const [content, setContent] = useState("");
-
-	// const bannedCountries = {
-	// 	Brazil: {
-	// 		allPersons: true,
-	// 		allForeigners: false,
-	// 		selectNations: []
-	// 	},
-
-	// 	Canada: {
-	// 		allPersons: false,
-	// 		allForeigners: true,
-	// 		selectNations: []
-	// 	},
-	// 	"United States of America": {
-	// 		allPersons: false,
-	// 		allForeigners: false,
-	// 		selectNations: ["France", "Germany", "Italy", "Spain"]
-	// 	}
-	// };
-
 	return (
 		<div>
 			<MapChart

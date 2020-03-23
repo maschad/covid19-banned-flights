@@ -18,30 +18,38 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 
 	const handleChangeCountry = name => {
 		if (bannedCountries[name]) {
-			const { allPersons, allForeigners, selectNations } = bannedCountries[
-				name
-			];
+			/**
+			 * In the immediacy will only show countries with all banned flights
+			 * but eventually as scraper develops more details will be included.
+			 */
+			// const { allPersons, allForeigners, selectNations } = bannedCountries[
+			// 	name
+			// ];
 
-			if (allPersons) {
-				setFilledBannedCountries(allCountries.map(country => country));
-				setTooltipContent(
-					` ${name}'s Ports Closed, ALL incoming flights, including citizens banned.`
-				);
-			} else if (allForeigners) {
-				setFilledBannedCountries(
-					allCountries.filter(country => country !== name)
-				);
-				setTooltipContent(
-					`${name} ONLY citizens allowed, ALL other incoming flights banned`
-				);
-			} else {
-				setFilledBannedCountries(selectNations);
-				setTooltipContent(
-					`${name} has banned flights from the following countries ${selectNations.map(
-						nation => nation
-					)}`
-				);
-			}
+			// if (allPersons) {
+			// 	setFilledBannedCountries(allCountries.map(country => country));
+			// 	setTooltipContent(
+			// 		` ${name}'s Ports Closed, ALL incoming flights, including citizens banned.`
+			// 	);
+			// } else if (allForeigners) {
+			// 	setFilledBannedCountries(
+			// 		allCountries.filter(country => country !== name)
+			// 	);
+			// 	setTooltipContent(
+			// 		`${name} ONLY citizens allowed, ALL other incoming flights banned`
+			// 	);
+			// } else {
+			// 	setFilledBannedCountries(selectNations);
+			// 	setTooltipContent(
+			// 		`${name} has banned flights from the following countries ${selectNations.map(
+			// 			nation => nation
+			// 		)}`
+			// 	);
+			// }
+			setFilledBannedCountries(bannedCountries[name]);
+			setTooltipContent(
+				`${name} ONLY citizens allowed, ALL other incoming flights banned`
+			);
 		} else {
 			setTooltipContent(`${name} — No banned flights`);
 		}

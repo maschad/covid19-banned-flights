@@ -19,7 +19,6 @@ module.exports.scrapeData = function(url = defaultUrl) {
 
 			const countriesBannedFlights = [];
 			const countries = $("a");
-			const barredCountries = $(".body-content > p");
 
 			countries.each(function() {
 				let text = $(this)
@@ -27,17 +26,20 @@ module.exports.scrapeData = function(url = defaultUrl) {
 					.text();
 				let title = $(this).attr("title");
 
-				if (
-					dict[title] !== undefined &&
-					(text.includes("entry") || text.includes("closed"))
-				) {
-					global.console.log("text", text);
+				if (dict[title] !== undefined && text.includes("citizens")) {
+					if (
+						(text.includes("citizen") ||
+							text.includes("closed") ||
+							text.includes("resident") ||
+							text.includes("foreign") ||
+							text.includes("international")) &&
+						!countriesBannedFlights.includes(title)
+					) {
+						countriesBannedFlights.push(title);
+					}
 				}
 			});
-
-			barredCountries.each(function() {
-				let paragraph = $(this).text();
-			});
+			global.console.log("countries", countriesBannedFlights);
 		})
 		.catch(console.error);
 };
