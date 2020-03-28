@@ -9,7 +9,7 @@ import {
 	ThemeProvider
 } from "@material-ui/core/styles";
 import { grey } from "@material-ui/core/colors";
-import { AppBar, Fab, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import Home from "./pages/home";
@@ -32,6 +32,10 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginRight: theme.spacing(2)
 	},
+	fab: {
+		position: "absolute",
+		bottom: theme.spacing(-10)
+	},
 	title: {
 		flexGrow: 1
 	}
@@ -47,12 +51,13 @@ const App = () => {
 					<Typography variant='h6' className={classes.title}>
 						COVID19 Flight Info
 					</Typography>
+					<Typography></Typography>
+					<Button color='inherit' startIcon={<FavoriteIcon />}>
+						Show some love :)
+					</Button>
 				</Toolbar>
 			</AppBar>
 			<Home />
-			<Fab color='primary' aria-label='add'>
-				<FavoriteIcon />
-			</Fab>
 		</ThemeProvider>
 	);
 };

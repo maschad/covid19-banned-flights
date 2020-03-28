@@ -24,6 +24,7 @@ const Home = () => {
 
 	const [bannedCountries, setBannedCountries] = useState("");
 	const [content, setContent] = useState("");
+
 	return (
 		<div>
 			<MapChart
