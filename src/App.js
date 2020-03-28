@@ -18,7 +18,8 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemText
+	ListItemText,
+	Modal
 } from "@material-ui/core";
 
 import Drawer from "@material-ui/core/Drawer";
@@ -28,6 +29,8 @@ import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
+
+import QRCode from "qrcode.react";
 
 import Home from "./pages/home";
 
@@ -49,6 +52,19 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginRight: theme.spacing(2)
 	},
+	paper: {
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		position: "absolute",
+		width: 400,
+		backgroundColor: theme.palette.background.paper,
+		border: "2px solid #FFF",
+		borderRadius: 10,
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+		outline: "none"
+	},
 	list: {
 		width: 250
 	},
@@ -59,7 +75,44 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
 	const classes = useStyles();
+
 	const [drawerState, setDrawerState] = useState(false);
+
+	const [modal, setModal] = useState(false);
+	const [modalContent, setModalContent] = useState(null);
+
+	const sendBitcoin = () => {
+		setModalContent(
+			<div>
+				<Typography variant='body1'>
+					Scan this QR Code with your wallet
+				</Typography>
+				<QRCode value='bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q' />
+				<Typography variant='body1'>
+					Or Copy this Address: bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q
+				</Typography>
+			</div>
+		);
+		handleModal(true);
+	};
+
+	const sendEther = () => {};
+
+	const handleModal = value => {
+		setModal(value);
+	};
+
+	const renderModalBody = <div className={classes.paper}>{modalContent}</div>;
+
+	const modalBody = (
+		<Modal
+			open={modal}
+			onClose={() => handleModal(false)}
+			aria-labelledby='simple-modal-title'
+			aria-describedby='simple-modal-description'>
+			{renderModalBody}
+		</Modal>
+	);
 
 	const toggleDrawer = value => event => {
 		if (
@@ -78,17 +131,17 @@ const App = () => {
 			onClick={toggleDrawer(false)}
 			onKeyDown={toggleDrawer(false)}>
 			<List>
-				<ListItem button>
-					<ListItemIcon>
-						<Icon icon={bitcoinIcon} />
-					</ListItemIcon>
-					<ListItemText primary='BTC' />
-				</ListItem>
-				<ListItem button>
+				<ListItem button onClick={sendEther}>
 					<ListItemIcon>
 						<Icon icon={ethereumIcon} />
 					</ListItemIcon>
 					<ListItemText primary='ETH' />
+				</ListItem>
+				<ListItem button onClick={sendBitcoin}>
+					<ListItemIcon>
+						<Icon icon={bitcoinIcon} />
+					</ListItemIcon>
+					<ListItemText primary='BTC' />
 				</ListItem>
 			</List>
 		</div>
@@ -117,8 +170,8 @@ const App = () => {
 					{cryptoList}
 				</Drawer>
 			</React.Fragment>
-
 			<Home />
+			{modalBody}
 		</ThemeProvider>
 	);
 };
