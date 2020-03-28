@@ -4,18 +4,19 @@ import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 
 import MapChart from "../components/MapChart";
-import { scrapeData } from "../lib/scraper";
+
+import { getResults } from "../lib/httpClient";
 
 const Home = () => {
 	useEffect(() => {
 		/**
 		 * JSON @schema
 		 * {
-		 *  "countryName": [... banned countries]
+		 *  "countryName": [...info on banned countries]
 		 * }
 		 */
 		const fetchData = async () => {
-			const results = await scrapeData();
+			const results = await getResults();
 			setBannedCountries(results);
 		};
 		fetchData();

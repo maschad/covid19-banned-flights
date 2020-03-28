@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import {
 	ZoomableGroup,
 	ComposableMap,
@@ -8,63 +8,38 @@ import {
 	Geography
 } from "react-simple-maps";
 
-import allCountries from "../lib/countryList.js";
-
 const geoUrl =
 	"https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
 const MapChart = ({ bannedCountries, setTooltipContent }) => {
-	const [fillBannedCountries, setFilledBannedCountries] = useState([]);
-
 	const handleChangeCountry = name => {
-		if (bannedCountries[name]) {
-			/**
-			 * In the immediacy will only show countries with all banned flights
-			 * but eventually as scraper develops more details will be included.
-			 */
-			// const { allPersons, allForeigners, selectNations } = bannedCountries[
-			// 	name
-			// ];
+		// Some disparities in how MapCharts stores names versus what is returned
+		// This is just some minimal data cleaning
+		switch (name) {
+			case "United States of America":
+				name = "United States";
+				break;
+			default:
+				break;
+		}
 
-			// if (allPersons) {
-			// 	setFilledBannedCountries(allCountries.map(country => country));
-			// 	setTooltipContent(
-			// 		` ${name}'s Ports Closed, ALL incoming flights, including citizens banned.`
-			// 	);
-			// } else if (allForeigners) {
-			// 	setFilledBannedCountries(
-			// 		allCountries.filter(country => country !== name)
-			// 	);
-			// 	setTooltipContent(
-			// 		`${name} ONLY citizens allowed, ALL other incoming flights banned`
-			// 	);
-			// } else {
-			// 	setFilledBannedCountries(selectNations);
-			// 	setTooltipContent(
-			// 		`${name} has banned flights from the following countries ${selectNations.map(
-			// 			nation => nation
-			// 		)}`
-			// 	);
-			// }
-			setFilledBannedCountries(bannedCountries[name]);
+		if (bannedCountries[name]) {
 			setTooltipContent(
-				`${name} ONLY citizens allowed, ALL other incoming flights banned`
+				`${name}:  ${bannedCountries[name].map(info => info.toString())}`
 			);
 		} else {
-			setTooltipContent(`${name} — No banned flights`);
+			setTooltipContent(`${name} — No Info :(`);
 		}
 	};
 
 	return (
-		<ComposableMap data-tip='' projectionConfig={{ scale: 180 }}>
+		<ComposableMap data-tip='' projectionConfig={{ scale: 200 }}>
 			<ZoomableGroup>
 				<Geographies geography={geoUrl}>
 					{({ geographies }) =>
 						geographies.map(geo => {
 							const { NAME } = geo.properties;
-							const country = fillBannedCountries.find(
-								country => country === NAME
-							);
+
 							return (
 								<Geography
 									key={geo.rsmKey}
@@ -79,7 +54,6 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 											outline: "none"
 										}
 									}}
-									fill={country ? "#D13D16" : "#F5F4F6"}
 								/>
 							);
 						})
