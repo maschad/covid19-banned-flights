@@ -13,6 +13,8 @@ import { grey } from "@material-ui/core/colors";
 import {
 	AppBar,
 	Button,
+	Box,
+	Container,
 	Toolbar,
 	Typography,
 	List,
@@ -29,6 +31,7 @@ import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import QRCode from "qrcode.react";
 
@@ -81,17 +84,41 @@ const App = () => {
 	const [modal, setModal] = useState(false);
 	const [modalContent, setModalContent] = useState(null);
 
+	const [copied, setCopied] = useState(false);
+	const [address, setAddress] = useState("");
+
+	const copyToClipboard = value => {
+		navigator.clipboard.writeText(value);
+		setCopied(true);
+	};
+
 	const sendBitcoin = () => {
+		setAddress("bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q");
 		setModalContent(
-			<div>
+			<Container maxWidth='lg'>
+				<div style={{ marginLeft: 150 }}>
+					<Icon
+						icon={bitcoinIcon}
+						style={{
+							width: 100,
+							height: 100
+						}}
+					/>
+				</div>
 				<Typography variant='body1'>
 					Scan this QR Code with your wallet
 				</Typography>
-				<QRCode value='bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q' />
-				<Typography variant='body1'>
-					Or Copy this Address: bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q
-				</Typography>
-			</div>
+				<Box
+					justifyContent='center'
+					alignItems='center'
+					display='flex'
+					padding={5}>
+					<QRCode
+						value='bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q'
+						size={256}
+					/>
+				</Box>
+			</Container>
 		);
 		handleModal(true);
 	};
@@ -102,7 +129,18 @@ const App = () => {
 		setModal(value);
 	};
 
-	const renderModalBody = <div className={classes.paper}>{modalContent}</div>;
+	const renderModalBody = (
+		<div className={classes.paper}>
+			{modalContent}
+			<Button
+				startIcon={<FileCopyIcon />}
+				onClick={() => copyToClipboard(address)}
+			/>
+			<Typography variant='body1'>
+				{copied ? "Copied!" : `Or Copy this Address: ${address}`}
+			</Typography>
+		</div>
+	);
 
 	const modalBody = (
 		<Modal
