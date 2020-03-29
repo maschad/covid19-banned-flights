@@ -76,6 +76,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+const BTCAddress = "bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q";
+const ETHAddress = "0x6ed31d002338349E486daD57939E1e4A4A7a0007";
+
 const App = () => {
 	const classes = useStyles();
 
@@ -92,13 +95,23 @@ const App = () => {
 		setCopied(true);
 	};
 
-	const sendBitcoin = () => {
-		setAddress("bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q");
+	const sendViaQR = type => {
+		let address,
+			icon = "";
+		if (type === "BTC") {
+			address = BTCAddress;
+			icon = bitcoinIcon;
+			setAddress(address);
+		} else {
+			address = ETHAddress;
+			icon = ethereumIcon;
+			setAddress(address);
+		}
 		setModalContent(
 			<Container maxWidth='lg'>
 				<div style={{ marginLeft: 150 }}>
 					<Icon
-						icon={bitcoinIcon}
+						icon={icon}
 						style={{
 							width: 100,
 							height: 100
@@ -113,16 +126,14 @@ const App = () => {
 					alignItems='center'
 					display='flex'
 					padding={5}>
-					<QRCode
-						value='bc1qppv3awnvxw7kas3zne6jcwj2w8a5uehaz3mn6q'
-						size={256}
-					/>
+					<QRCode value={address} size={256} />
 				</Box>
 			</Container>
 		);
 		handleModal(true);
 	};
 
+	/**To integrate web modal so ether is easier to send */
 	const sendEther = () => {};
 
 	const handleModal = value => {
@@ -169,13 +180,13 @@ const App = () => {
 			onClick={toggleDrawer(false)}
 			onKeyDown={toggleDrawer(false)}>
 			<List>
-				<ListItem button onClick={sendEther}>
+				<ListItem button onClick={() => sendViaQR("ETH")}>
 					<ListItemIcon>
 						<Icon icon={ethereumIcon} />
 					</ListItemIcon>
 					<ListItemText primary='ETH' />
 				</ListItem>
-				<ListItem button onClick={sendBitcoin}>
+				<ListItem button onClick={() => sendViaQR("BTC")}>
 					<ListItemIcon>
 						<Icon icon={bitcoinIcon} />
 					</ListItemIcon>
