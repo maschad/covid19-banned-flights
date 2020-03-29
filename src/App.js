@@ -16,8 +16,7 @@ import {
 	Box,
 	Container,
 	Toolbar,
-	Typography,
-	Modal
+	Typography
 } from "@material-ui/core";
 
 import { Icon } from "@iconify/react";
@@ -25,11 +24,11 @@ import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import QRCode from "qrcode.react";
 
 import CustomDrawer from "./components/Drawer";
+import CustomModal from "./components/Modal";
 import Home from "./pages/home";
 
 const theme = createMuiTheme({
@@ -50,19 +49,7 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginRight: theme.spacing(2)
 	},
-	paper: {
-		top: "50%",
-		left: "50%",
-		transform: "translate(-50%, -50%)",
-		position: "absolute",
-		width: 400,
-		backgroundColor: theme.palette.background.paper,
-		border: "2px solid #FFF",
-		borderRadius: 10,
-		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2, 4, 3),
-		outline: "none"
-	},
+
 	title: {
 		flexGrow: 1
 	}
@@ -132,29 +119,6 @@ const App = () => {
 		setModal(value);
 	};
 
-	const renderModalBody = (
-		<div className={classes.paper}>
-			{modalContent}
-			<Button
-				startIcon={<FileCopyIcon />}
-				onClick={() => copyToClipboard(address)}
-			/>
-			<Typography variant='body1'>
-				{copied ? "Copied!" : `Or Copy this Address: ${address}`}
-			</Typography>
-		</div>
-	);
-
-	const modalBody = (
-		<Modal
-			open={modal}
-			onClose={() => handleModal(false)}
-			aria-labelledby='simple-modal-title'
-			aria-describedby='simple-modal-description'>
-			{renderModalBody}
-		</Modal>
-	);
-
 	const toggleDrawer = value => event => {
 		if (
 			event.type === "keydown" &&
@@ -186,7 +150,14 @@ const App = () => {
 				toggleDrawer={toggleDrawer}
 			/>
 			<Home />
-			{modalBody}
+			<CustomModal
+				address={address}
+				copied={copied}
+				copyToClipboard={copyToClipboard}
+				handleModal={handleModal}
+				modal={modal}
+				modalContent={modalContent}
+			/>
 		</ThemeProvider>
 	);
 };
