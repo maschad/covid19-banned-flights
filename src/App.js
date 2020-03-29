@@ -17,14 +17,8 @@ import {
 	Container,
 	Toolbar,
 	Typography,
-	List,
-	ListItem,
-	ListItemIcon,
-	ListItemText,
 	Modal
 } from "@material-ui/core";
-
-import Drawer from "@material-ui/core/Drawer";
 
 import { Icon } from "@iconify/react";
 import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
@@ -35,6 +29,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import QRCode from "qrcode.react";
 
+import CustomDrawer from "./components/Drawer";
 import Home from "./pages/home";
 
 const theme = createMuiTheme({
@@ -67,9 +62,6 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 		outline: "none"
-	},
-	list: {
-		width: 250
 	},
 	title: {
 		flexGrow: 1
@@ -173,29 +165,6 @@ const App = () => {
 		setDrawerState(value);
 	};
 
-	const cryptoList = (
-		<div
-			className={classes.list}
-			role='presentation'
-			onClick={toggleDrawer(false)}
-			onKeyDown={toggleDrawer(false)}>
-			<List>
-				<ListItem button onClick={() => sendViaQR("ETH")}>
-					<ListItemIcon>
-						<Icon icon={ethereumIcon} />
-					</ListItemIcon>
-					<ListItemText primary='ETH' />
-				</ListItem>
-				<ListItem button onClick={() => sendViaQR("BTC")}>
-					<ListItemIcon>
-						<Icon icon={bitcoinIcon} />
-					</ListItemIcon>
-					<ListItemText primary='BTC' />
-				</ListItem>
-			</List>
-		</div>
-	);
-
 	return (
 		<ThemeProvider theme={theme}>
 			<AppBar position='static'>
@@ -211,14 +180,11 @@ const App = () => {
 					</Button>
 				</Toolbar>
 			</AppBar>
-			<React.Fragment key='right'>
-				<Drawer
-					anchor={"right"}
-					open={drawerState}
-					onClose={toggleDrawer(false)}>
-					{cryptoList}
-				</Drawer>
-			</React.Fragment>
+			<CustomDrawer
+				drawerState={drawerState}
+				sendViaQR={sendViaQR}
+				toggleDrawer={toggleDrawer}
+			/>
 			<Home />
 			{modalBody}
 		</ThemeProvider>
