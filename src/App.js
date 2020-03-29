@@ -159,7 +159,7 @@ const App = () => {
 				sendViaQR={sendViaQR}
 				toggleDrawer={toggleDrawer}
 			/>
-			<Home />
+			<Home matches={matches} />
 			<CustomModal
 				address={address}
 				copied={copied}

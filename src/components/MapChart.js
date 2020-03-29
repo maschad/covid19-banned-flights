@@ -11,7 +11,7 @@ import {
 const geoUrl =
 	"https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-const MapChart = ({ bannedCountries, setTooltipContent }) => {
+const MapChart = ({ bannedCountries, renderChart, setTooltipContent }) => {
 	const handleChangeCountry = name => {
 		// Some disparities in how MapCharts stores names versus what is returned
 		// This is just some minimal data cleaning
@@ -44,6 +44,7 @@ const MapChart = ({ bannedCountries, setTooltipContent }) => {
 								<Geography
 									key={geo.rsmKey}
 									geography={geo}
+									onClick={() => renderChart(NAME)}
 									onMouseEnter={() => {
 										handleChangeCountry(NAME);
 									}}

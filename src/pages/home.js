@@ -3,35 +3,155 @@
 import React, { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 
+import axios from "axios";
+
+import { CircularProgress, Modal, makeStyles } from "@material-ui/core";
+
+import clsx from "clsx";
+
 import MapChart from "../components/MapChart";
+import Chart from "../components/Chart";
 
-import { getResults } from "../lib/httpClient";
+import { getData } from "../lib/httpClient";
 
-const Home = () => {
-	useEffect(() => {
-		/**
-		 * JSON @schema
-		 * {
-		 *  "countryName": [...info on banned countries]
-		 * }
-		 */
-		const fetchData = async () => {
-			const results = await getResults();
-			setBannedCountries(results);
-		};
-		fetchData();
-	});
+const url = `${process.env.REACT_APP_SCRAPER_URL}`;
+const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
+
+const useStyles = makeStyles(theme => ({
+	root: {
+		flexGrow: 1
+	},
+	progress: {
+		alignSelf: "center",
+		justifySelf: "center",
+		margin: theme.spacing(2)
+	},
+	modal: {
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		position: "absolute",
+		height: 500,
+		width: 400,
+		backgroundColor: theme.palette.background.paper,
+		border: "2px solid #FFF",
+		borderRadius: 10,
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+		outline: "none"
+	},
+	mobileModal: {
+		top: "25%",
+		left: "25%",
+		transform: "translate(-25%, -25%)",
+		height: 100,
+		width: 200
+	}
+}));
+
+const Home = ({ matches }) => {
+	const classes = useStyles();
+
+	const [loading, setLoading] = useState(false);
 
 	const [bannedCountries, setBannedCountries] = useState("");
+	const [countryData, setCountryData] = useState({});
+
 	const [content, setContent] = useState("");
+	const [modal, setModal] = useState(false);
+
+	const [chartData, setChartData] = useState([]);
+
+	useEffect(() => {
+		const cancel = axios.CancelToken.source();
+
+		const fetchData = async () => {
+			setLoading(true);
+
+			let results = await getData(url, cancel);
+			setBannedCountries(results);
+
+			results = await getData(pomberUrl, cancel);
+			setCountryData(results);
+
+			setLoading(false);
+		};
+
+		fetchData();
+
+		return () => {
+			cancel.cancel();
+		};
+	}, []);
+
+	const renderChart = name => {
+		if (countryData[name] !== undefined) {
+			const confirmedData = countryData[name].map(stat => {
+				return {
+					x: new Date(stat.date).getTime() / 10000000,
+					y: stat.confirmed
+				};
+			});
+			const deathsData = countryData[name].map(stat => {
+				return {
+					x: stat.date,
+					y: stat.deaths
+				};
+			});
+
+			const recoveredData = countryData[name].map(stat => {
+				return {
+					x: stat.date,
+					y: stat.deaths
+				};
+			});
+			setChartData([
+				{
+					id: "Confirmed",
+					data: confirmedData
+				}
+			]);
+			global.console.log("chart data", chartData);
+			setModal(true);
+		}
+	};
+
+	const handleModal = value => {
+		setModal(value);
+	};
+
+	const renderModalBody = (
+		<div
+			className={clsx(classes.modal, {
+				[classes.mobileModal]: !matches
+			})}>
+			<Chart data={chartData} />
+		</div>
+	);
 
 	return (
-		<div>
-			<MapChart
-				bannedCountries={bannedCountries}
-				setTooltipContent={setContent}
-			/>
-			<ReactTooltip>{content}</ReactTooltip>
+		<div className={classes.root}>
+			{loading ? (
+				<div>
+					<CircularProgress className={classes.progress} />
+				</div>
+			) : (
+				<div>
+					<MapChart
+						renderChart={renderChart}
+						bannedCountries={bannedCountries}
+						setTooltipContent={setContent}
+					/>
+					<ReactTooltip>{content}</ReactTooltip>
+					<Modal
+						open={modal}
+						onClose={() => handleModal(false)}
+						aria-labelledby='simple-modal-title'
+						aria-describedby='simple-modal-description'>
+						{renderModalBody}
+					</Modal>
+				</div>
+			)}
 		</div>
 	);
 };
