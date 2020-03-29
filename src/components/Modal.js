@@ -1,10 +1,11 @@
 /** @format */
 import React from "react";
+import clsx from "clsx";
 import { Button, makeStyles, Modal, Typography } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 const useStyles = makeStyles(theme => ({
-	paper: {
+	modal: {
 		top: "50%",
 		left: "50%",
 		transform: "translate(-50%, -50%)",
@@ -16,6 +17,12 @@ const useStyles = makeStyles(theme => ({
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
 		outline: "none"
+	},
+	mobileModal: {
+		top: "25%",
+		left: "25%",
+		transform: "translate(-25%, -25%)",
+		width: 200
 	}
 }));
 
@@ -24,19 +31,28 @@ const CustomModal = ({
 	copied,
 	copyToClipboard,
 	handleModal,
+	matches,
 	modal,
 	modalContent
 }) => {
 	const classes = useStyles();
 
+	const typography = {
+		fontSize: 15
+	};
+
+	const mobileTypography = {
+		fontSize: 9
+	};
+
 	const renderModalBody = (
-		<div className={classes.paper}>
+		<div className={clsx(classes.modal, { [classes.mobileModal]: !matches })}>
 			{modalContent}
 			<Button
 				startIcon={<FileCopyIcon />}
 				onClick={() => copyToClipboard(address)}
 			/>
-			<Typography variant='body1'>
+			<Typography style={{ ...(matches ? typography : mobileTypography) }}>
 				{copied ? "Copied!" : `Or Copy this Address: ${address}`}
 			</Typography>
 		</div>

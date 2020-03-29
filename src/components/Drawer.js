@@ -7,7 +7,8 @@ import {
 	ListItem,
 	ListItemIcon,
 	ListItemText,
-	makeStyles
+	makeStyles,
+	Typography
 } from "@material-ui/core";
 
 import { Icon } from "@iconify/react";
@@ -17,6 +18,11 @@ import ethereumIcon from "@iconify/icons-mdi/ethereum";
 const useStyles = makeStyles(() => ({
 	list: {
 		width: 250
+	},
+	titleText: {
+		justifyContent: "center",
+		alignItems: "center",
+		inset: "auto"
 	}
 }));
 
@@ -30,13 +36,20 @@ const CustomDrawer = ({ drawerState, sendViaQR, toggleDrawer }) => {
 			onClick={toggleDrawer(false)}
 			onKeyDown={toggleDrawer(false)}>
 			<List>
-				<ListItem button onClick={() => sendViaQR("ETH")}>
+				<ListItem>
+					<ListItemText>
+						<Typography className={classes.titleText}>
+							Show some love without borders and bank fees :){" "}
+						</Typography>
+					</ListItemText>
+				</ListItem>
+				<ListItem button onClick={() => sendViaQR("Ethereum")}>
 					<ListItemIcon>
 						<Icon icon={ethereumIcon} />
 					</ListItemIcon>
 					<ListItemText primary='ETH' />
 				</ListItem>
-				<ListItem button onClick={() => sendViaQR("BTC")}>
+				<ListItem button onClick={() => sendViaQR("Bitcoin")}>
 					<ListItemIcon>
 						<Icon icon={bitcoinIcon} />
 					</ListItemIcon>

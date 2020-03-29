@@ -19,6 +19,8 @@ import {
 	Typography
 } from "@material-ui/core";
 
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 import { Icon } from "@iconify/react";
 import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
@@ -49,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 	menuButton: {
 		marginRight: theme.spacing(2)
 	},
-
 	title: {
 		flexGrow: 1
 	}
@@ -69,6 +70,8 @@ const App = () => {
 	const [copied, setCopied] = useState(false);
 	const [address, setAddress] = useState("");
 
+	const matches = useMediaQuery("(min-width:600px)");
+
 	const copyToClipboard = value => {
 		navigator.clipboard.writeText(value);
 		setCopied(true);
@@ -77,7 +80,7 @@ const App = () => {
 	const sendViaQR = type => {
 		let address,
 			icon = "";
-		if (type === "BTC") {
+		if (type === "Bitcoin") {
 			address = BTCAddress;
 			icon = bitcoinIcon;
 			setAddress(address);
@@ -86,19 +89,28 @@ const App = () => {
 			icon = ethereumIcon;
 			setAddress(address);
 		}
+
+		const iconStyles = {
+			height: 100,
+			width: 100,
+			marginLeft: 130
+		};
+		const mobileIconStyles = {
+			height: 50,
+			width: 50,
+			marginLeft: 55,
+			marginBottom: 10
+		};
 		setModalContent(
 			<Container maxWidth='lg'>
-				<div style={{ marginLeft: 150 }}>
-					<Icon
-						icon={icon}
-						style={{
-							width: 100,
-							height: 100
-						}}
-					/>
-				</div>
+				<Icon
+					icon={icon}
+					style={{
+						...(matches ? iconStyles : mobileIconStyles)
+					}}
+				/>
 				<Typography variant='body1'>
-					Scan this QR Code with your wallet
+					{`Scan this QR Code with your ${type} wallet`}
 				</Typography>
 				<Box
 					justifyContent='center'
@@ -111,9 +123,6 @@ const App = () => {
 		);
 		handleModal(true);
 	};
-
-	/**To integrate web modal so ether is easier to send */
-	const sendEther = () => {};
 
 	const handleModal = value => {
 		setModal(value);
@@ -136,11 +145,12 @@ const App = () => {
 					<Typography variant='h6' className={classes.title}>
 						COVID19 Flight Info
 					</Typography>
+
 					<Button
 						color='inherit'
 						startIcon={<FavoriteIcon />}
 						onClick={toggleDrawer(true)}>
-						Show some love :)
+						{matches ? "Show some love :)" : null}
 					</Button>
 				</Toolbar>
 			</AppBar>
@@ -155,6 +165,7 @@ const App = () => {
 				copied={copied}
 				copyToClipboard={copyToClipboard}
 				handleModal={handleModal}
+				matches={matches}
 				modal={modal}
 				modalContent={modalContent}
 			/>
