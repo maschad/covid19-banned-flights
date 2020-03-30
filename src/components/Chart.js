@@ -13,7 +13,7 @@ const Chart = ({ data }) => {
 				type: "linear",
 				min: "auto",
 				max: "auto",
-				stacked: true,
+				stacked: false,
 				reverse: false
 			}}
 			curve='natural'
