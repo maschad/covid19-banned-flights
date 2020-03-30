@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 		transform: "translate(-50%, -50%)",
 		position: "absolute",
 		height: 500,
-		width: 400,
+		width: 800,
 		backgroundColor: theme.palette.background.paper,
 		border: "2px solid #FFF",
 		borderRadius: 10,
@@ -86,29 +86,40 @@ const Home = ({ matches }) => {
 
 	const renderChart = name => {
 		if (countryData[name] !== undefined) {
-			const confirmedData = countryData[name].map(stat => {
+			const confirmedData = countryData[name].map((stat, index) => {
 				return {
-					x: new Date(stat.date).getTime() / 10000000,
+					x: index,
 					y: stat.confirmed
 				};
 			});
-			const deathsData = countryData[name].map(stat => {
+			const deathsData = countryData[name].map((stat, index) => {
 				return {
-					x: stat.date,
+					x: index,
 					y: stat.deaths
 				};
 			});
 
-			const recoveredData = countryData[name].map(stat => {
+			const recoveredData = countryData[name].map((stat, index) => {
 				return {
-					x: stat.date,
-					y: stat.deaths
+					x: index,
+					y: stat.recovered
 				};
 			});
 			setChartData([
 				{
 					id: "Confirmed",
+					color: "hsl(40, 50%, 45%)",
 					data: confirmedData
+				},
+				{
+					id: "Deaths",
+					color: "hsl(0, 50%, 45%)",
+					data: deathsData
+				},
+				{
+					id: "Recovered",
+					color: "hsl(83, 70%, 50%)",
+					data: recoveredData
 				}
 			]);
 			global.console.log("chart data", chartData);

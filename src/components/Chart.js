@@ -1,29 +1,72 @@
 /** @format */
 import React from "react";
 
-import { ResponsiveBump } from "@nivo/bump";
+import { ResponsiveLine } from "@nivo/line";
 
 const Chart = ({ data }) => {
 	return (
-		<ResponsiveBump
+		<ResponsiveLine
 			data={data}
-			margin={{ top: 40, right: 100, bottom: 40, left: 60 }}
-			colors={{ scheme: "orange_red" }}
-			lineWidth={3}
-			activeLineWidth={6}
-			inactiveLineWidth={3}
-			inactiveOpacity={0.15}
-			pointSize={10}
-			activePointSize={16}
-			inactivePointSize={0}
-			pointColor={{ theme: "background" }}
-			pointBorderWidth={3}
-			activePointBorderWidth={3}
-			pointBorderColor={{ from: "serie.color" }}
+			margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+			xScale={{ type: "point" }}
+			yScale={{
+				type: "linear",
+				min: "auto",
+				max: "auto",
+				stacked: true,
+				reverse: false
+			}}
+			curve='natural'
 			axisTop={null}
 			axisRight={null}
 			axisBottom={null}
-			axisLeft={null}
+			axisLeft={{
+				orient: "left",
+				tickSize: 5,
+				tickPadding: 5,
+				tickRotation: 0,
+				legend: "count",
+				legendOffset: -40,
+				legendPosition: "middle"
+			}}
+			enableGridX={false}
+			enableGridY={false}
+			colors={{ scheme: "nivo" }}
+			lineWidth={3}
+			enablePoints={false}
+			pointColor={{ theme: "background" }}
+			pointBorderWidth={2}
+			pointBorderColor={{ from: "serieColor" }}
+			pointLabel='y'
+			pointLabelYOffset={-12}
+			enableArea={true}
+			useMesh={true}
+			legends={[
+				{
+					anchor: "bottom-right",
+					direction: "column",
+					justify: false,
+					translateX: 100,
+					translateY: 0,
+					itemsSpacing: 0,
+					itemDirection: "left-to-right",
+					itemWidth: 80,
+					itemHeight: 20,
+					itemOpacity: 0.75,
+					symbolSize: 12,
+					symbolShape: "circle",
+					symbolBorderColor: "rgba(0, 0, 0, .5)",
+					effects: [
+						{
+							on: "hover",
+							style: {
+								itemBackground: "rgba(0, 0, 0, .03)",
+								itemOpacity: 1
+							}
+						}
+					]
+				}
+			]}
 		/>
 	);
 };
