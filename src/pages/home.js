@@ -5,7 +5,12 @@ import ReactTooltip from "react-tooltip";
 
 import axios from "axios";
 
-import { CircularProgress, Modal, makeStyles } from "@material-ui/core";
+import {
+	CircularProgress,
+	Modal,
+	makeStyles,
+	Typography
+} from "@material-ui/core";
 
 import clsx from "clsx";
 
@@ -94,22 +99,23 @@ const Home = ({ matches }) => {
 				break;
 		}
 		if (countryData[name] !== undefined) {
+			setCountryName(name);
 			const confirmedData = countryData[name].map((stat, index) => {
 				return {
-					x: index,
+					x: `Day ${index}`,
 					y: stat.confirmed
 				};
 			});
 			const deathsData = countryData[name].map((stat, index) => {
 				return {
-					x: index,
+					x: `Day ${index}`,
 					y: stat.deaths
 				};
 			});
 
 			const recoveredData = countryData[name].map((stat, index) => {
 				return {
-					x: index,
+					x: `Day ${index}`,
 					y: stat.recovered
 				};
 			});
@@ -143,6 +149,7 @@ const Home = ({ matches }) => {
 			className={clsx(classes.modal, {
 				[classes.mobileModal]: !matches
 			})}>
+			<Typography variant='h3'>{countryName}</Typography>
 			<Chart data={chartData} />
 		</div>
 	);

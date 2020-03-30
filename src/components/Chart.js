@@ -37,7 +37,7 @@ const Chart = ({ data }) => {
 			pointColor={{ theme: "background" }}
 			pointBorderWidth={2}
 			pointBorderColor={{ from: "serieColor" }}
-			pointLabel='y'
+			pointLabel='persons'
 			pointLabelYOffset={-12}
 			enableArea={true}
 			useMesh={true}
