@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 		top: "25%",
 		left: "25%",
 		transform: "translate(-25%, -25%)",
-		height: 100,
-		width: 200
+		height: 295,
+		width: 292
 	}
 }));
 
@@ -61,6 +61,7 @@ const Home = ({ matches }) => {
 	const [modal, setModal] = useState(false);
 
 	const [chartData, setChartData] = useState([]);
+	const [countryName, setCountryName] = useState("");
 
 	useEffect(() => {
 		const cancel = axios.CancelToken.source();
@@ -85,6 +86,13 @@ const Home = ({ matches }) => {
 	}, []);
 
 	const renderChart = name => {
+		switch (name) {
+			case "United States of America":
+				name = "US";
+				break;
+			default:
+				break;
+		}
 		if (countryData[name] !== undefined) {
 			const confirmedData = countryData[name].map((stat, index) => {
 				return {
