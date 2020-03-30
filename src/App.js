@@ -26,6 +26,7 @@ import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 import QRCode from "qrcode.react";
 
@@ -146,6 +147,11 @@ const App = () => {
 						COVID19 Flight Info
 					</Typography>
 
+					<Button
+						color='inherit'
+						startIcon={<GitHubIcon />}
+						href='https://github.com/maschad/covid19-banned-flights'
+					/>
 					<Button
 						color='inherit'
 						startIcon={<FavoriteIcon />}

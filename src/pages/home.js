@@ -122,7 +122,6 @@ const Home = ({ matches }) => {
 					data: recoveredData
 				}
 			]);
-			global.console.log("chart data", chartData);
 			setModal(true);
 		}
 	};
