@@ -17,8 +17,8 @@
 		"qrcode.react": "^1.0.0",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
+		"react-globe.gl": "^2.7.6",
 		"react-scripts": "3.4.1",
-		"react-simple-maps": "^1.0.0-beta.0",
 		"react-tooltip": "^4.1.2",
 		"typeface-roboto": "^0.0.75",
 		"web3modal": "^1.1.0"

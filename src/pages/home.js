@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import ReactTooltip from "react-tooltip";
 
 import axios from "axios";
 
@@ -14,7 +13,7 @@ import {
 
 import CustomModal from "../components/Modal";
 import Chart from "../components/Chart";
-import MapChart from "../components/MapChart";
+import GlobeChart from "../components/MapChart";
 
 import { getData } from "../lib/httpClient";
 
@@ -147,12 +146,7 @@ const Home = () => {
 				</div>
 			) : (
 				<div>
-					<MapChart
-						renderChart={renderChart}
-						bannedCountries={bannedCountries}
-						setTooltipContent={setContent}
-					/>
-					<ReactTooltip>{content}</ReactTooltip>
+					<GlobeChart />
 					<CustomModal
 						handleModal={handleModal}
 						modal={modal}

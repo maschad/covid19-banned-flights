@@ -1,67 +1,23 @@
 /** @format */
 
-import React, { memo } from "react";
-import {
-	ZoomableGroup,
-	ComposableMap,
-	Geographies,
-	Geography
-} from "react-simple-maps";
+import React, { memo, useEffect, useRef } from "react";
+import Globe from "react-globe.gl";
 
-const geoUrl =
-	"https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
+const MapChart = data => {
+	const globeEl = useRef();
 
-const MapChart = ({ bannedCountries, renderChart, setTooltipContent }) => {
-	const handleChangeCountry = name => {
-		// Some disparities in how MapCharts stores names versus what is returned
-		// This is just some minimal data cleaning
-		switch (name) {
-			case "United States of America":
-				name = "United States";
-				break;
-			default:
-				break;
-		}
-
-		if (bannedCountries[name]) {
-			setTooltipContent(
-				`${name}:  ${bannedCountries[name].map(info => info.toString())}`
-			);
-		} else {
-			setTooltipContent(`${name} — No Info :(`);
-		}
-	};
+	useEffect(() => {
+		// Auto-rotate
+		globeEl.current.controls().autoRotate = true;
+		globeEl.current.controls().autoRotateSpeed = 0.1;
+	}, []);
 
 	return (
-		<ComposableMap data-tip='' projectionConfig={{ scale: 200 }}>
-			<ZoomableGroup>
-				<Geographies geography={geoUrl}>
-					{({ geographies }) =>
-						geographies.map(geo => {
-							const { NAME } = geo.properties;
-
-							return (
-								<Geography
-									key={geo.rsmKey}
-									geography={geo}
-									onClick={() => renderChart(NAME)}
-									onMouseEnter={() => {
-										handleChangeCountry(NAME);
-									}}
-									onMouseLeave={() => {}}
-									style={{
-										hover: {
-											fill: "#36DA27",
-											outline: "none"
-										}
-									}}
-								/>
-							);
-						})
-					}
-				</Geographies>
-			</ZoomableGroup>
-		</ComposableMap>
+		<Globe
+			ref={globeEl}
+			globeImageUrl='//unpkg.com/three-globe/example/img/earth-night.jpg'
+			backgroundImageUrl='//unpkg.com/three-globe/example/img/night-sky.png'
+		/>
 	);
 };
 
