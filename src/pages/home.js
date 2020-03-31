@@ -98,42 +98,33 @@ const Home = () => {
 				break;
 		}
 		if (countryData[name] !== undefined) {
-			const confirmedData = countryData[name].map((stat, index) => {
-				return {
-					x: `Day ${index}`,
-					y: stat.confirmed
-				};
-			});
-			const deathsData = countryData[name].map((stat, index) => {
-				return {
-					x: `Day ${index}`,
-					y: stat.deaths
-				};
-			});
+			const getData = type => {
+				return countryData[name].map((stat, index) => {
+					return {
+						x: `Day ${index}`,
+						y: stat[type]
+					};
+				});
+			};
 
-			const recoveredData = countryData[name].map((stat, index) => {
-				return {
-					x: `Day ${index}`,
-					y: stat.recovered
-				};
-			});
 			setChartData([
 				{
 					id: "Confirmed",
 					color: "hsl(40, 50%, 45%)",
-					data: confirmedData
+					data: getData("confirmed")
 				},
 				{
 					id: "Deaths",
 					color: "hsl(0, 50%, 45%)",
-					data: deathsData
+					data: getData("deaths")
 				},
 				{
 					id: "Recovered",
 					color: "hsl(83, 70%, 50%)",
-					data: recoveredData
+					data: getData("recovered")
 				}
 			]);
+
 			handleModal(true);
 			setModalContent(
 				<Grid>
