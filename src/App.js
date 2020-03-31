@@ -20,8 +20,6 @@ import {
 	Grid
 } from "@material-ui/core";
 
-import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
-import ethereumIcon from "@iconify/icons-mdi/ethereum";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -45,6 +43,15 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
+	addressText: {
+		textAlign: "center",
+		marginTop: 15,
+		[theme.breakpoints.down("md")]: {
+			flexWrap: "wrap",
+			fontSize: 10,
+			marginTop: 10
+		}
+	},
 	root: {
 		flexGrow: 1
 	},
@@ -75,21 +82,18 @@ const App = () => {
 	};
 
 	const sendViaQR = type => {
-		let address,
-			icon = "";
+		let address = "";
 		if (type === "Bitcoin") {
 			address = BTCAddress;
-			icon = bitcoinIcon;
 		} else {
 			address = ETHAddress;
-			icon = ethereumIcon;
 		}
 
 		setModalContent(
-			<Grid container spacing={1} justify='center' alignContent='center' xs>
+			<Grid container spacing={4} justify='center' alignContent='center'>
 				<Grid item alignItems='center' justify='center'>
 					<Typography variant='body1'>
-						{`Scan this QR Code with your ${type} wallet`}
+						Scan this QR Code with your <strong> {type}</strong> wallet
 					</Typography>
 				</Grid>
 				<Box justifyContent='center' alignItems='center' display='flex'>
@@ -99,7 +103,7 @@ const App = () => {
 					startIcon={<FileCopyIcon />}
 					onClick={() => copyToClipboard(address)}
 				/>
-				<Typography>
+				<Typography className={classes.addressText}>
 					{copied ? "Copied!" : `Or Copy this Address: ${address}`}
 				</Typography>
 			</Grid>

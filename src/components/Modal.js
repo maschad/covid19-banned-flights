@@ -1,6 +1,6 @@
 /** @format */
 import React from "react";
-import { makeStyles, Modal, Paper } from "@material-ui/core";
+import { makeStyles, Modal, Paper, Zoom } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
 	modal: {
@@ -12,27 +12,24 @@ const useStyles = makeStyles(theme => ({
 		padding: theme.spacing(5),
 		position: "absolute",
 		[theme.breakpoints.up("lg")]: {
-			top: "45%",
-			left: "40%",
+			top: "27%",
+			left: "28%",
 			transform: "translate(-30%, -30%)",
 			width: 450
 		},
 		[theme.breakpoints.down("md")]: {
-			top: "35%",
-			left: "40%",
-			width: "450",
-			transform: "translate(-30%, -30%)"
+			top: "20%",
+			left: "25%",
+			width: 450
 		},
 		[theme.breakpoints.down("sm")]: {
-			top: "35%",
-			left: "28%",
-			transform: "translate(-26%, -24%)",
+			top: "18%",
+			left: "10%",
 			width: 268
 		},
 		[theme.breakpoints.down("xs")]: {
-			top: "33%",
-			left: "28%",
-			transform: "translate(-26%, -24%)",
+			top: "14%",
+			left: "5%",
 			width: 202
 		},
 		outline: "none"
@@ -43,7 +40,9 @@ const CustomModal = ({ handleModal, modal, modalContent }) => {
 	const classes = useStyles();
 
 	const renderModalBody = (
-		<Paper className={classes.modal}>{modalContent}</Paper>
+		<Paper elevation={4} className={classes.modal}>
+			{modalContent}
+		</Paper>
 	);
 
 	return (
@@ -52,7 +51,7 @@ const CustomModal = ({ handleModal, modal, modalContent }) => {
 			onClose={() => handleModal(false)}
 			aria-labelledby='modal-title'
 			aria-describedby='modal-description'>
-			{renderModalBody}
+			<Zoom in={modal}>{renderModalBody}</Zoom>
 		</Modal>
 	);
 };
