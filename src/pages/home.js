@@ -7,15 +7,14 @@ import axios from "axios";
 
 import {
 	CircularProgress,
-	Modal,
 	makeStyles,
-	Typography
+	Typography,
+	Grid
 } from "@material-ui/core";
 
-import clsx from "clsx";
-
-import MapChart from "../components/MapChart";
+import CustomModal from "../components/Modal";
 import Chart from "../components/Chart";
+import MapChart from "../components/MapChart";
 
 import { getData } from "../lib/httpClient";
 
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Home = ({ matches }) => {
+const Home = () => {
 	const classes = useStyles();
 
 	const [loading, setLoading] = useState(false);
@@ -64,9 +63,9 @@ const Home = ({ matches }) => {
 
 	const [content, setContent] = useState("");
 	const [modal, setModal] = useState(false);
+	const [modalContent, setModalContent] = useState("");
 
 	const [chartData, setChartData] = useState([]);
-	const [countryName, setCountryName] = useState("");
 
 	useEffect(() => {
 		const cancel = axios.CancelToken.source();
@@ -99,7 +98,6 @@ const Home = ({ matches }) => {
 				break;
 		}
 		if (countryData[name] !== undefined) {
-			setCountryName(name);
 			const confirmedData = countryData[name].map((stat, index) => {
 				return {
 					x: `Day ${index}`,
@@ -136,23 +134,19 @@ const Home = ({ matches }) => {
 					data: recoveredData
 				}
 			]);
-			setModal(true);
+			handleModal(true);
+			setModalContent(
+				<Grid>
+					<Typography variant='h3'>{name}</Typography>
+					<Chart data={chartData} />
+				</Grid>
+			);
 		}
 	};
 
 	const handleModal = value => {
 		setModal(value);
 	};
-
-	const renderModalBody = (
-		<div
-			className={clsx(classes.modal, {
-				[classes.mobileModal]: !matches
-			})}>
-			<Typography variant='h3'>{countryName}</Typography>
-			<Chart data={chartData} />
-		</div>
-	);
 
 	return (
 		<div className={classes.root}>
@@ -168,13 +162,11 @@ const Home = ({ matches }) => {
 						setTooltipContent={setContent}
 					/>
 					<ReactTooltip>{content}</ReactTooltip>
-					<Modal
-						open={modal}
-						onClose={() => handleModal(false)}
-						aria-labelledby='simple-modal-title'
-						aria-describedby='simple-modal-description'>
-						{renderModalBody}
-					</Modal>
+					<CustomModal
+						handleModal={handleModal}
+						modal={modal}
+						modalContent={modalContent}
+					/>
 				</div>
 			)}
 		</div>

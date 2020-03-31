@@ -14,16 +14,15 @@ import {
 	AppBar,
 	Button,
 	Box,
-	Container,
+	Hidden,
 	Toolbar,
-	Typography
+	Typography,
+	Grid
 } from "@material-ui/core";
 
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-
-import { Icon } from "@iconify/react";
 import bitcoinIcon from "@iconify/icons-mdi/bitcoin";
 import ethereumIcon from "@iconify/icons-mdi/ethereum";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -69,9 +68,6 @@ const App = () => {
 	const [modalContent, setModalContent] = useState(null);
 
 	const [copied, setCopied] = useState(false);
-	const [address, setAddress] = useState("");
-
-	const matches = useMediaQuery("(min-width:600px)");
 
 	const copyToClipboard = value => {
 		navigator.clipboard.writeText(value);
@@ -84,43 +80,29 @@ const App = () => {
 		if (type === "Bitcoin") {
 			address = BTCAddress;
 			icon = bitcoinIcon;
-			setAddress(address);
 		} else {
 			address = ETHAddress;
 			icon = ethereumIcon;
-			setAddress(address);
 		}
 
-		const iconStyles = {
-			height: 100,
-			width: 100,
-			marginLeft: 130
-		};
-		const mobileIconStyles = {
-			height: 50,
-			width: 50,
-			marginLeft: 55,
-			marginBottom: 10
-		};
 		setModalContent(
-			<Container maxWidth='lg'>
-				<Icon
-					icon={icon}
-					style={{
-						...(matches ? iconStyles : mobileIconStyles)
-					}}
-				/>
-				<Typography variant='body1'>
-					{`Scan this QR Code with your ${type} wallet`}
-				</Typography>
-				<Box
-					justifyContent='center'
-					alignItems='center'
-					display='flex'
-					padding={5}>
+			<Grid container spacing={1} justify='center' alignContent='center' xs>
+				<Grid item alignItems='center' justify='center'>
+					<Typography variant='body1'>
+						{`Scan this QR Code with your ${type} wallet`}
+					</Typography>
+				</Grid>
+				<Box justifyContent='center' alignItems='center' display='flex'>
 					<QRCode value={address} size={256} />
 				</Box>
-			</Container>
+				<Button
+					startIcon={<FileCopyIcon />}
+					onClick={() => copyToClipboard(address)}
+				/>
+				<Typography>
+					{copied ? "Copied!" : `Or Copy this Address: ${address}`}
+				</Typography>
+			</Grid>
 		);
 		handleModal(true);
 	};
@@ -156,7 +138,7 @@ const App = () => {
 						color='inherit'
 						startIcon={<FavoriteIcon />}
 						onClick={toggleDrawer(true)}>
-						{matches ? "Show some love :)" : null}
+						<Hidden only={["sm", "xs"]}>Show some love :)</Hidden>
 					</Button>
 				</Toolbar>
 			</AppBar>
@@ -165,13 +147,9 @@ const App = () => {
 				sendViaQR={sendViaQR}
 				toggleDrawer={toggleDrawer}
 			/>
-			<Home matches={matches} />
+			<Home />
 			<CustomModal
-				address={address}
-				copied={copied}
-				copyToClipboard={copyToClipboard}
 				handleModal={handleModal}
-				matches={matches}
 				modal={modal}
 				modalContent={modalContent}
 			/>
