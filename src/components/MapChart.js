@@ -30,7 +30,7 @@ const MapChart = ({ bannedCountries }) => {
 			polygonSideColor={() => "rgba(0, 100, 0, 0.15)"}
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => `
-        <b>${d.ADMIN} (${d.ISO_A2}):</b> <br />
+        <b>${d.ADMIN}:</b> <br />
         GDP: <i>${d.GDP_MD_EST}</i> M$<br/>
         Population: <i>${d.POP_EST}</i>
       `}

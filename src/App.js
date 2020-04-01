@@ -52,9 +52,6 @@ const useStyles = makeStyles(theme => ({
 			marginTop: 10
 		}
 	},
-	root: {
-		flexGrow: 1
-	},
 	menuButton: {
 		marginRight: theme.spacing(2)
 	},
@@ -146,6 +143,7 @@ const App = () => {
 					</Button>
 				</Toolbar>
 			</AppBar>
+
 			<CustomDrawer
 				drawerState={drawerState}
 				sendViaQR={sendViaQR}
