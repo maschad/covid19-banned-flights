@@ -145,7 +145,7 @@ const Home = () => {
 				</div>
 			) : (
 				<div>
-					<GlobeChart bannedCountries={bannedCountries} />
+					<GlobeChart countryData={countryData} />
 					<CustomModal
 						handleModal={handleModal}
 						modal={modal}
