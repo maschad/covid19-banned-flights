@@ -2,16 +2,21 @@
 
 import React, { memo, useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
-import countries from "../lib/countries.json";
 
 const MapChart = ({ bannedCountries }) => {
 	const globeEl = useRef();
 	const [hoverD, setHoverD] = useState();
+	const [countries, setCountries] = useState({ features: [] });
 
 	useEffect(() => {
 		// Auto-rotate
 		globeEl.current.controls().autoRotate = true;
 		globeEl.current.controls().autoRotateSpeed = 0.1;
+
+		//Get Country info
+		fetch("./countries.json")
+			.then(res => res.json())
+			.then(setCountries);
 	}, []);
 
 	return (
