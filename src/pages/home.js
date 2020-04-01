@@ -60,7 +60,6 @@ const Home = () => {
 	const [bannedCountries, setBannedCountries] = useState("");
 	const [countryData, setCountryData] = useState({});
 
-	const [content, setContent] = useState("");
 	const [modal, setModal] = useState(false);
 	const [modalContent, setModalContent] = useState("");
 
@@ -146,7 +145,7 @@ const Home = () => {
 				</div>
 			) : (
 				<div>
-					<GlobeChart />
+					<GlobeChart bannedCountries={bannedCountries} />
 					<CustomModal
 						handleModal={handleModal}
 						modal={modal}
