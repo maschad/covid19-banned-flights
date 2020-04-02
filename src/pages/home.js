@@ -96,6 +96,7 @@ const Home = () => {
 	}, []);
 
 	const renderChart = name => {
+		global.console.log("called");
 		switch (name) {
 			case "United States of America":
 				name = "US";

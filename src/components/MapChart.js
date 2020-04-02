@@ -11,7 +11,7 @@ const MapChart = ({ countryData, renderChart }) => {
 	useEffect(() => {
 		// Auto-rotate
 		globeEl.current.controls().autoRotate = true;
-		globeEl.current.controls().autoRotateSpeed = 0.1;
+		globeEl.current.controls().autoRotateSpeed = 0.03;
 
 		//Get Country info
 		fetch("./countries.json")
@@ -52,7 +52,7 @@ const MapChart = ({ countryData, renderChart }) => {
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => getPolygonLabel(d)}
 			onPolygonHover={setHoverD}
-			onPolygonClick={renderChart}
+			onHexPolygonClick={polygon => global.console.log("polygon", polygon)}
 			polygonsTransitionDuration={300}
 		/>
 	);
