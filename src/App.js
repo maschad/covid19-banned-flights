@@ -15,6 +15,7 @@ import {
 	Button,
 	Box,
 	Hidden,
+	IconButton,
 	Toolbar,
 	Typography,
 	Grid
@@ -130,11 +131,11 @@ const App = () => {
 						COVID19 Flight Info
 					</Typography>
 
-					<Button
+					<IconButton
 						color='inherit'
-						startIcon={<GitHubIcon />}
-						href='https://github.com/maschad/covid19-banned-flights'
-					/>
+						href='https://github.com/maschad/covid19-banned-flights'>
+						<GitHubIcon />
+					</IconButton>
 					<Button
 						color='inherit'
 						startIcon={<FavoriteIcon />}

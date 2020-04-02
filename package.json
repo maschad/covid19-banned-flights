@@ -17,6 +17,7 @@
 		"moment": "^2.24.0",
 		"qrcode.react": "^1.0.0",
 		"react": "^16.13.1",
+		"react-async": "^10.0.1",
 		"react-dom": "^16.13.1",
 		"react-globe.gl": "^2.7.6",
 		"react-scripts": "3.4.1",

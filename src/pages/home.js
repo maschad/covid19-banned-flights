@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
 
 import {
@@ -16,11 +15,20 @@ import Chart from "../components/Chart";
 import GlobeChart from "../components/MapChart";
 
 import { getData } from "../lib/httpClient";
+import CustomTab from "../components/Tab";
 
 const url = `${process.env.REACT_APP_SCRAPER_URL}`;
 const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
 
 const useStyles = makeStyles(theme => ({
+	chart: {
+		flexGrow: 1,
+		hegiht: 200
+	},
+	flightInfo: {
+		flexGrow: 1,
+		height: 100
+	},
 	root: {
 		flexGrow: 1
 	},
@@ -124,35 +132,56 @@ const Home = () => {
 			]);
 
 			handleModal(true);
-			setModalContent(
-				<Grid>
-					<Typography variant='h3'>{name}</Typography>
-					<Chart data={chartData} />
-				</Grid>
-			);
+			setModalContent(getModalContent(name, chartData));
 		}
+	};
+
+	const getModalContent = (name, chartData) => {
+		const tabTitles = ["Flight Info"];
+		const tabContents = ["Basic Stats"];
+
+		tabContents.push(
+			<Grid className={classes.flightInfo}>
+				<Typography variant='h3'>{name}</Typography>
+				<Typography variant='body2'>{bannedCountries[name]}</Typography>
+			</Grid>
+		);
+
+		tabContents.push(
+			<Grid className={classes.chart}>
+				<Typography variant='h3'>{name}</Typography>
+				<Chart data={chartData} />
+			</Grid>
+		);
+
+		return (
+			<Grid>
+				<CustomTab tabContents={tabContents} tabTitles={tabTitles} />
+			</Grid>
+		);
 	};
 
 	const handleModal = value => {
 		setModal(value);
 	};
 
+	if (loading)
+		return (
+			<div>
+				<CircularProgress className={classes.progress} />
+			</div>
+		);
+
 	return (
 		<div className={classes.root}>
-			{loading ? (
-				<div>
-					<CircularProgress className={classes.progress} />
-				</div>
-			) : (
-				<div>
-					<GlobeChart countryData={countryData} />
-					<CustomModal
-						handleModal={handleModal}
-						modal={modal}
-						modalContent={modalContent}
-					/>
-				</div>
-			)}
+			<div>
+				<GlobeChart countryData={countryData} renderChart={renderChart} />
+				<CustomModal
+					handleModal={handleModal}
+					modal={modal}
+					modalContent={modalContent}
+				/>
+			</div>
 		</div>
 	);
 };

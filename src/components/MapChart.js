@@ -2,9 +2,8 @@
 
 import React, { memo, useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
-import moment from "moment";
 
-const MapChart = ({ countryData }) => {
+const MapChart = ({ countryData, renderChart }) => {
 	const globeEl = useRef();
 	const [hoverD, setHoverD] = useState();
 	const [countries, setCountries] = useState({ features: [] });
@@ -22,9 +21,7 @@ const MapChart = ({ countryData }) => {
 
 	const todaysData = countryName => {
 		if (countryData[countryName] !== undefined) {
-			return countryData[countryName].find(
-				data => data.date === moment().format("YYYY-M-DD")
-			);
+			return countryData[countryName][countryData[countryName].length - 1];
 		} else {
 			return "No info";
 		}
@@ -55,6 +52,7 @@ const MapChart = ({ countryData }) => {
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => getPolygonLabel(d)}
 			onPolygonHover={setHoverD}
+			onPolygonClick={renderChart}
 			polygonsTransitionDuration={300}
 		/>
 	);
