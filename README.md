@@ -21,7 +21,6 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
@@ -31,4 +30,25 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Setting up
+
+Because this project requires a backend, you can run the [scraper](https://github.com/maschad/covid-scraper) I mentioned before
+
+## Docker Instructions
+
+If you have [Docker](https://www.docker.com/) then:
+
+- Build an image
+  ```
+  docker build -t <your username>/banned-flights
+  ```
+- Run that image
+
+  ```
+  docker run -d <your username>/banned-flights
+  ```
+
+- Ensure it's running
+  ```
+  docker ps
+  ```
