@@ -2,6 +2,7 @@
 
 import React, { memo, useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
+import { sanitizeCountryNames } from "../lib/utils";
 
 const MapChart = ({ countryData, renderChart }) => {
 	const globeEl = useRef();
@@ -20,6 +21,8 @@ const MapChart = ({ countryData, renderChart }) => {
 	}, []);
 
 	const todaysData = countryName => {
+		countryName = sanitizeCountryNames(countryName);
+
 		if (countryData[countryName] !== undefined) {
 			return countryData[countryName][countryData[countryName].length - 1];
 		} else {
