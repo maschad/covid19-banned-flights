@@ -16,6 +16,10 @@ import GlobeChart from "../components/MapChart";
 import { getData } from "../lib/httpClient";
 import CustomTab from "../components/Tab";
 import CustomDialog from "../components/Dialog";
+import {
+	sanitizeCountryNamesForFlightInfo,
+	sanitizeCountryNamesForCOVIDStats
+} from "../lib/utils";
 
 const url = `${process.env.REACT_APP_SCRAPER_URL}`;
 const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
@@ -23,7 +27,7 @@ const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
 const useStyles = makeStyles(theme => ({
 	chart: {
 		flexGrow: 1,
-		hegiht: 200
+		height: 400
 	},
 	flightInfo: {
 		flexGrow: 1,
@@ -95,25 +99,20 @@ const Home = () => {
 	}, []);
 
 	const handleDialog = value => {
-		setDialog(true);
+		setDialog(value);
 	};
 
 	const renderChart = name => {
-		switch (name) {
-			case "United States of America":
-				name = "US";
-				break;
-			default:
-				break;
-		}
-		if (countryData[name] !== undefined) {
+		if (countryData[sanitizeCountryNamesForCOVIDStats(name)] !== undefined) {
 			const getData = type => {
-				return countryData[name].map((stat, index) => {
-					return {
-						x: `Day ${index}`,
-						y: stat[type]
-					};
-				});
+				return countryData[sanitizeCountryNamesForCOVIDStats(name)].map(
+					(stat, index) => {
+						return {
+							x: `Day ${index}`,
+							y: stat[type]
+						};
+					}
+				);
 			};
 
 			setChartData([
@@ -147,10 +146,10 @@ const Home = () => {
 				<Typography variant='h3'>{name}</Typography>
 
 				<Typography variant='body2'>
-					{" "}
-					{bannedCountries[name] === undefined
+					{bannedCountries[sanitizeCountryNamesForFlightInfo(name)] ===
+					undefined
 						? "No Flight Info"
-						: bannedCountries[name]}
+						: bannedCountries[sanitizeCountryNamesForFlightInfo(name)]}
 				</Typography>
 			</Grid>
 		);

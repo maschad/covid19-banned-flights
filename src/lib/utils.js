@@ -1,6 +1,6 @@
 /** @format */
 
-export const sanitizeCountryNames = countryName => {
+export const sanitizeCountryNamesForCOVIDStats = countryName => {
 	switch (countryName) {
 		case "Democratic Republic of the Congo":
 			countryName = "Congo (Kinshasa)";
@@ -20,6 +20,18 @@ export const sanitizeCountryNames = countryName => {
 
 		case "United Republic of Tanzania":
 			countryName = "Tanzania";
+			break;
+		default:
+			break;
+	}
+
+	return countryName;
+};
+
+export const sanitizeCountryNamesForFlightInfo = countryName => {
+	switch (countryName) {
+		case "United States of America":
+			countryName = "United States";
 			break;
 		default:
 			break;

@@ -2,7 +2,7 @@
 
 import React, { memo, useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
-import { sanitizeCountryNames } from "../lib/utils";
+import { sanitizeCountryNamesForCOVIDStats } from "../lib/utils";
 
 const MapChart = ({ countryData, renderChart }) => {
 	const globeEl = useRef();
@@ -21,7 +21,7 @@ const MapChart = ({ countryData, renderChart }) => {
 	}, []);
 
 	const todaysData = countryName => {
-		countryName = sanitizeCountryNames(countryName);
+		countryName = sanitizeCountryNamesForCOVIDStats(countryName);
 
 		if (countryData[countryName] !== undefined) {
 			return countryData[countryName][countryData[countryName].length - 1];
@@ -55,7 +55,7 @@ const MapChart = ({ countryData, renderChart }) => {
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => getPolygonLabel(d)}
 			onPolygonHover={setHoverD}
-			onPolygonClick={({ properties: d }) => renderChart(d.ADMIN)}
+			onPolygonRightClick={({ properties: d }) => renderChart(d.ADMIN)}
 			polygonsTransitionDuration={300}
 		/>
 	);
