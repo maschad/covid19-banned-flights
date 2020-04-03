@@ -10,12 +10,12 @@ import {
 	Grid
 } from "@material-ui/core";
 
-import CustomModal from "../components/Modal";
 import Chart from "../components/Chart";
 import GlobeChart from "../components/MapChart";
 
 import { getData } from "../lib/httpClient";
 import CustomTab from "../components/Tab";
+import CustomDialog from "../components/Dialog";
 
 const url = `${process.env.REACT_APP_SCRAPER_URL}`;
 const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
@@ -68,10 +68,9 @@ const Home = () => {
 	const [bannedCountries, setBannedCountries] = useState("");
 	const [countryData, setCountryData] = useState({});
 
-	const [modal, setModal] = useState(false);
-	const [modalContent, setModalContent] = useState("");
-
 	const [chartData, setChartData] = useState([]);
+	const [dialog, setDialog] = useState(false);
+	const [dialogContent, setDialogContent] = useState({});
 
 	useEffect(() => {
 		const cancel = axios.CancelToken.source();
@@ -95,8 +94,11 @@ const Home = () => {
 		};
 	}, []);
 
+	const handleDialog = value => {
+		setDialog(true);
+	};
+
 	const renderChart = name => {
-		global.console.log("called");
 		switch (name) {
 			case "United States of America":
 				name = "US";
@@ -131,20 +133,25 @@ const Home = () => {
 					data: getData("recovered")
 				}
 			]);
-
-			handleModal(true);
-			setModalContent(getModalContent(name, chartData));
+			setDialogContent(getDialogContent(name, chartData));
+			handleDialog(true);
 		}
 	};
 
-	const getModalContent = (name, chartData) => {
-		const tabTitles = ["Flight Info"];
-		const tabContents = ["Basic Stats"];
+	const getDialogContent = (name, chartData) => {
+		const tabTitles = ["Flight Info", "Basic Stats"];
+		const tabContents = [];
 
 		tabContents.push(
 			<Grid className={classes.flightInfo}>
 				<Typography variant='h3'>{name}</Typography>
-				<Typography variant='body2'>{bannedCountries[name]}</Typography>
+
+				<Typography variant='body2'>
+					{" "}
+					{bannedCountries[name] === undefined
+						? "No Flight Info"
+						: bannedCountries[name]}
+				</Typography>
 			</Grid>
 		);
 
@@ -162,10 +169,6 @@ const Home = () => {
 		);
 	};
 
-	const handleModal = value => {
-		setModal(value);
-	};
-
 	if (loading)
 		return (
 			<div>
@@ -177,10 +180,10 @@ const Home = () => {
 		<div className={classes.root}>
 			<div>
 				<GlobeChart countryData={countryData} renderChart={renderChart} />
-				<CustomModal
-					handleModal={handleModal}
-					modal={modal}
-					modalContent={modalContent}
+				<CustomDialog
+					handleDialog={handleDialog}
+					dialog={dialog}
+					dialogContent={dialogContent}
 				/>
 			</div>
 		</div>

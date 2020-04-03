@@ -61,12 +61,12 @@ const CustomTab = ({ tabTitles, tabContents }) => {
 					onChange={handleChange}
 					aria-label='simple tabs example'>
 					{tabTitles.map((title, index) => (
-						<Tab label={title} {...a11yProps(index)} />
+						<Tab key={index} label={title} {...a11yProps(index)} />
 					))}
 				</Tabs>
 			</AppBar>
 			{tabContents.map((content, index) => (
-				<TabPanel value={value} index={index}>
+				<TabPanel key={index} value={value} index={index}>
 					{content}
 				</TabPanel>
 			))}
