@@ -46,8 +46,8 @@ const MapChart = ({ countryData, renderChart }) => {
 	return (
 		<Globe
 			ref={globeEl}
-			globeImageUrl='//unpkg.com/three-globe/example/img/earth-night.jpg'
-			backgroundImageUrl='//unpkg.com/three-globe/example/img/night-sky.png'
+			globeImageUrl={require("../assets/earth-night.jpg")}
+			backgroundImageUrl={require("../assets/night-sky.png")}
 			polygonsData={countries.features}
 			polygonAltitude={d => (d === hoverD ? 0.12 : 0.06)}
 			polygonCapColor={d => (d === hoverD ? "green" : "black")}
