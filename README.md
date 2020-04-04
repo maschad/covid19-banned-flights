@@ -2,9 +2,11 @@
 
 # See Coronavirus Travel Restrictions, Across the Globe
 
-### [A demo here](https://covid19-banned-flights.herokuapp.com/)
+### [Live Site](https://www.covid19globalinfo.com/)
 
 This project utilizes [pomber's](https://github.com/pomber/covid19) time series JSON API as well as a scraper that I built [here](https://github.com/maschad/covid-scraper). As well as [vasturiano's](https://github.com/vasturiano/react-globe.gl) react globe library.
+
+![gif demo](https://s5.gifyu.com/images/Screen-Recording-2020-04-03-at-9.gif)
 
 ## Available Scripts
 
