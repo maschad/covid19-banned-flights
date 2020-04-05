@@ -7,7 +7,9 @@ import {
 	CircularProgress,
 	makeStyles,
 	Typography,
-	Grid
+	Grid,
+	DialogContent,
+	DialogContentText,
 } from "@material-ui/core";
 
 import Chart from "../components/Chart";
@@ -18,28 +20,28 @@ import CustomTab from "../components/Tab";
 import CustomDialog from "../components/Dialog";
 import {
 	sanitizeCountryNamesForFlightInfo,
-	sanitizeCountryNamesForCOVIDStats
+	sanitizeCountryNamesForCOVIDStats,
 } from "../lib/utils";
 
 const url = `${process.env.REACT_APP_SCRAPER_URL}`;
 const pomberUrl = "https://pomber.github.io/covid19/timeseries.json";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
 	chart: {
 		flexGrow: 1,
-		height: 400
+		height: 400,
 	},
 	flightInfo: {
 		flexGrow: 1,
-		height: 100
+		height: 100,
 	},
 	root: {
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	progress: {
 		alignSelf: "center",
 		justifySelf: "center",
-		margin: theme.spacing(2)
+		margin: theme.spacing(2),
 	},
 	modal: {
 		top: "50%",
@@ -53,15 +55,15 @@ const useStyles = makeStyles(theme => ({
 		borderRadius: 10,
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
-		outline: "none"
+		outline: "none",
 	},
 	mobileModal: {
 		top: "25%",
 		left: "25%",
 		transform: "translate(-25%, -25%)",
 		height: 295,
-		width: 292
-	}
+		width: 292,
+	},
 }));
 
 const Home = () => {
@@ -98,18 +100,18 @@ const Home = () => {
 		};
 	}, []);
 
-	const handleDialog = value => {
+	const handleDialog = (value) => {
 		setDialog(value);
 	};
 
-	const renderChart = name => {
+	const renderChart = (name) => {
 		if (countryData[sanitizeCountryNamesForCOVIDStats(name)] !== undefined) {
-			const getData = type => {
+			const getData = (type) => {
 				return countryData[sanitizeCountryNamesForCOVIDStats(name)].map(
 					(stat, index) => {
 						return {
 							x: `Day ${index}`,
-							y: stat[type]
+							y: stat[type],
 						};
 					}
 				);
@@ -119,18 +121,18 @@ const Home = () => {
 				{
 					id: "Confirmed",
 					color: "hsl(40, 50%, 45%)",
-					data: getData("confirmed")
+					data: getData("confirmed"),
 				},
 				{
 					id: "Deaths",
 					color: "hsl(0, 50%, 45%)",
-					data: getData("deaths")
+					data: getData("deaths"),
 				},
 				{
 					id: "Recovered",
 					color: "hsl(83, 70%, 50%)",
-					data: getData("recovered")
-				}
+					data: getData("recovered"),
+				},
 			]);
 			setDialogContent(getDialogContent(name, chartData));
 			handleDialog(true);
@@ -144,13 +146,16 @@ const Home = () => {
 		tabContents.push(
 			<Grid className={classes.flightInfo}>
 				<Typography variant='h3'>{name}</Typography>
-
-				<Typography variant='body2'>
-					{bannedCountries[sanitizeCountryNamesForFlightInfo(name)] ===
-					undefined
-						? "No Flight Info"
-						: bannedCountries[sanitizeCountryNamesForFlightInfo(name)]}
-				</Typography>
+				<DialogContent dividers>
+					<DialogContentText id='scroll-dialog-description' tabIndex={-1}>
+						<Typography variant='body2'>
+							{bannedCountries[sanitizeCountryNamesForFlightInfo(name)] ===
+							undefined
+								? "No Flight Info"
+								: bannedCountries[sanitizeCountryNamesForFlightInfo(name)]}
+						</Typography>
+					</DialogContentText>
+				</DialogContent>
 			</Grid>
 		);
 

@@ -7,18 +7,18 @@ import {
 	IconButton,
 	makeStyles,
 	Slide,
-	Toolbar
+	Toolbar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
 	appBar: {
-		position: "relative"
+		position: "relative",
 	},
 	title: {
 		marginLeft: theme.spacing(2),
-		flex: 1
-	}
+		flex: 1,
+	},
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -30,6 +30,7 @@ const CustomDialog = ({ handleDialog, dialogContent, dialog }) => {
 	return (
 		<div>
 			<Dialog
+				scroll='paper'
 				fullScreen
 				open={dialog}
 				onClose={() => handleDialog(false)}
