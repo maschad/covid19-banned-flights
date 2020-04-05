@@ -55,7 +55,7 @@ const MapChart = ({ countryData, renderChart }) => {
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => getPolygonLabel(d)}
 			onPolygonHover={setHoverD}
-			onPolygonRightClick={({ properties: d }) => renderChart(d.ADMIN)}
+			onPolygonClick={({ properties: d }) => renderChart(d.ADMIN)}
 			polygonsTransitionDuration={300}
 		/>
 	);
