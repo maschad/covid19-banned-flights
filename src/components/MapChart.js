@@ -10,17 +10,13 @@ const MapChart = ({ countryData, renderChart }) => {
 	const [countries, setCountries] = useState({ features: [] });
 
 	useEffect(() => {
-		// Auto-rotate
-		globeEl.current.controls().autoRotate = true;
-		globeEl.current.controls().autoRotateSpeed = 0.03;
-
 		//Get Country info
 		fetch("./countries.json")
-			.then(res => res.json())
+			.then((res) => res.json())
 			.then(setCountries);
 	}, []);
 
-	const todaysData = countryName => {
+	const todaysData = (countryName) => {
 		countryName = sanitizeCountryNamesForCOVIDStats(countryName);
 
 		if (countryData[countryName] !== undefined) {
@@ -30,7 +26,7 @@ const MapChart = ({ countryData, renderChart }) => {
 		}
 	};
 
-	const getPolygonLabel = data => {
+	const getPolygonLabel = (data) => {
 		if (todaysData(data.ADMIN) === "No info") return "No Info";
 		else
 			return `
@@ -49,8 +45,8 @@ const MapChart = ({ countryData, renderChart }) => {
 			globeImageUrl={require("../assets/earth-night.jpg")}
 			backgroundImageUrl={require("../assets/night-sky.png")}
 			polygonsData={countries.features}
-			polygonAltitude={d => (d === hoverD ? 0.12 : 0.06)}
-			polygonCapColor={d => (d === hoverD ? "green" : "black")}
+			polygonAltitude={(d) => (d === hoverD ? 0.12 : 0.06)}
+			polygonCapColor={(d) => (d === hoverD ? "green" : "black")}
 			polygonSideColor={() => "rgba(0, 100, 0, 0.15)"}
 			polygonStrokeColor={() => "#111"}
 			polygonLabel={({ properties: d }) => getPolygonLabel(d)}
